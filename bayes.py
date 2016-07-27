@@ -26,29 +26,29 @@ class Bayes_Classifier:
       for fFileObj in os.walk("movies_reviews/"):
          lFileList = fFileObj[2]
          
-      #For each file name, load the text into a string and then tokenize the string
+      #For each file name, load the text into a string and then tokenize the string.
       for f in lFileList:
          review = self.loadFile("movies_reviews/" + f)
          words = self.tokenize(review)
-         #if the file is a negative review...
+         #If the file is a negative review,
          if f[7] == '1':
-            #for the word in the tokenized string
+            #For the word in the tokenized string,
             for word in words:
-               #if the word is in the dict already, add to its count
+               #If the word is in the dict already, add to its count.
                if word in self.neg:
                   self.neg[word] = self.neg[word] + 1
-                  #if the word isnt in the dict, create it
+                  #Else, create it.
                else:
                   self.neg[word] = 1
                   
-         #same as above, but for pos dict
+         #Same process for pos dict.
          else:
             for word in words:
                if word in self.pos:
                   self.pos[word] = self.pos[word] + 1
                else:
                   self.pos[word] = 1
-      #save the dict
+      #Save the dict.
       self.save(self.neg, "Negative_Dict")
       self.save(self.pos, "Positive_Dict")
     
@@ -64,11 +64,13 @@ class Bayes_Classifier:
       pos_denom = sum(self.pos.values()) * 1.0
       neg_denom = sum(self.neg.values()) * 1.0
       
-      denom = (sum(self.pos.values()) + sum(self.neg.values())) *1.0
+      denom = (sum(self.pos.values()) + sum(self.neg.values())) * 1.0
       
+      #prior probability of a word being pos or neg
       pos_prob = pos_denom / denom
       neg_prob = neg_denom / denom
       
+      #take log to minimize round off error of small numbers
       pos_prob = math.log(pos_prob)
       neg_prob = math.log(neg_prob)
 
